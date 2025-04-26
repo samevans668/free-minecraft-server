@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bouton Animation Bleu Clair</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: #1a1a1a; /* fond gris sombre */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .author-info {
+    color: white;
+    font-size: 3.6em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  .instructions {
+    color: white;
+    font-size: 3em;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .button-container {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    border-radius: 12px;
+  }
+
+  canvas#c {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  a.download-button {
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+    padding: 20px 60px;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+    background: transparent;
+    border: 2px solid white; /* contour blanc fin */
+    border-radius: 12px;
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+    cursor: pointer;
+  }
+
+  a.download-button:hover {
+    transform: scale(1.05);
+    transition: transform 0.2s;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="author-info">Auteur : Sam Evans</div>
+<div class="instructions">Tout les instructions pour créer un serveur Minecraft gratuit moddée ou classique sont intégrées dans ce fichier.</div>
+
+<div class="button-container">
+  <canvas id="c"></canvas>
+  <a class="download-button" href="SERVERS.zip" download>Télécharger</a>
+</div>
+
+<script>
+var root = {
+  wavecolor: { r: 102, g: 217, b: 255 },
+  rainbowSpeed: 0.5,
+  rainbow: false,
+  matrixspeed: 50
+};
+
+var c = document.getElementById("c");
+var ctx = c.getContext("2d");
+
+var konkani = "゠アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレワヰヱヲンヺ・ーヽヿ§∏∑∓0123456789";
+var characters = konkani.split("");
+var font_size = 16;
+var button = document.querySelector('.download-button');
+
+function resizeCanvas() {
+  c.width = button.offsetWidth;
+  c.height = button.offsetHeight;
+}
+
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+var columns = c.width / font_size;
+var drops = [];
+
+for (var x = 0; x < columns; x++)
+    drops[x] = 1;
+
+function draw() {
+    ctx.fillStyle = "rgba(0,0,0,0.1)";
+    ctx.fillRect(0, 0, c.width, c.height);
+
+    ctx.fillStyle = 'rgb(' + root.wavecolor.r + ',' + root.wavecolor.g + ',' + root.wavecolor.b + ')';
+    ctx.font = font_size + "px Arial";
+
+    for (var i = 0; i < drops.length; i++) {
+        var text = characters[Math.floor(Math.random() * characters.length)];
+        ctx.fillText(text, i * font_size, drops[i] * font_size);
+
+        drops[i]++;
+        if (drops[i] * font_size > c.height && Math.random() > 0.975)
+            drops[i] = 0;
+    }
+}
+
+setInterval(draw, root.matrixspeed);
+</script>
+
+</body>
+</html>
